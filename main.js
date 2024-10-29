@@ -1,12 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 const obj = {};
-const maxPages = 2;
+const maxPages = 3;
 
 let romanizedArray = [];
 let chineseArray = [];
 
-for(let i = 2; i <= maxPages; i++){
+for(let i = 3; i <= maxPages; i++){
     const romanizedFile = path.join(__dirname, `content/romanized/bible_text_${i}.txt`);
     const chineseFile = path.join(__dirname, `content/chinese/bible_text_${i}.txt`);
     const romanized = fs.readFileSync(romanizedFile, 'utf8');
@@ -71,9 +71,17 @@ const logs = [];
 
 for(let chineseIndex = 0, romanizedIndex = 0; romanizedIndex < romanizedArray.length;){
     const char = chineseArray[chineseIndex];
+
+    if(!char){
+        console.log("Found empty character at index", chineseIndex);
+        console.log("Character", char);
+        chineseIndex++;
+        romanizedIndex++;
+        continue;
+    }
     
     // Handle extended Unicode characters (including 𠊎, 𡟓, 𡜵)
-    if (char.length > 1) {
+    if (char && char.length > 1) {
         console.log(`Found extended character: ${char} at index ${chineseIndex}`);
         chineseIndex++;
         romanizedIndex++;

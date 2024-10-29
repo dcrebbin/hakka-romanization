@@ -3,7 +3,7 @@
 
 const fs = require('fs');
 const puppeteer = require('puppeteer');
-const maxPages = 1;
+const maxPages = 5;
 
 const chineseBook = 1806;
 const romanizedBook = 2408;
@@ -27,10 +27,12 @@ async function retrieveBiblePage(book, chapter, version, isChinese) {
     await page.evaluate(() => {
         const labels = document.getElementsByClassName('ChapterContent_label__R2PLt');
         const notes = document.getElementsByClassName('ChapterContent_note__YlDW0');
+        const headings = document.getElementsByClassName('ChapterContent_heading__xBDcs');
         
         // Convert HTMLCollection to Array since it's live and elements get removed
         Array.from(labels).forEach(label => label.remove());
         Array.from(notes).forEach(note => note.remove());
+        Array.from(headings).forEach(heading => heading.remove());
     });
 
     // Get text content
